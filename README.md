@@ -11,10 +11,12 @@ Repository creates for fast running development process with configuration, whic
 Can be found in [RELEASE_NOTES](RELEASE_NOTES.md).
 
 ## Authors
-* Roman Beskrovnyi - [romankh3](https://github.com/romankh3)
+* Andrey Rogovsky - [ARogovsky](https://github.com/ARogovsky)
+
 
 ## Acknowledgments
-...
+Thanks for:
+* Roman Beskrovnyi - [romankh3](https://github.com/romankh3)
 
 ## Contributing
 Please, follow [Contributing](CONTRIBUTING.md) page.
