@@ -12,6 +12,7 @@ Can be found in [RELEASE_NOTES](RELEASE_NOTES.md).
 
 ## Authors
 * Andrey Rogovsky - [ARogovsky](https://github.com/ARogovsky)
+* Dmiriy Popadiuk - [PopadukDV](https://github.com/popadukdv)
 
 
 ## Acknowledgments
