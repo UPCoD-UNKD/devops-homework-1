@@ -12,7 +12,7 @@ Can be found in [RELEASE_NOTES](RELEASE_NOTES.md).
 
 ## Authors
 * Andrey Rogovsky - [ARogovsky](https://github.com/ARogovsky)
-* Antonins Osipenko - [emagweb](https://github.com/emagweb)
+* Antonina Osipenko - [emagweb](https://github.com/emagweb)
 
 
 ## Acknowledgments
