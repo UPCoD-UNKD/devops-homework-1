@@ -370,7 +370,64 @@ Resources:
         - Key: Name
           Value: Instance2Volume2
 
+  # my test start =====================================
 
+  Instance2Volume3:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2Volume3
+
+  Instance2Volume4:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2Volume4
+
+  Instance2Volume5:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2Volume5
+
+  Instance2Volume6:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2Volume6
+
+  Instance2Volume7:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2Volume7
+            
+  Instance2Volume8:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2Volume8
+
+  # my test end ========================================
+  
   MountPoint2:
     Type: AWS::EC2::VolumeAttachment
     Properties:
@@ -378,6 +435,52 @@ Resources:
       VolumeId: !Ref Instance2Volume
       Device: /dev/xvdb
 
+  # my test start =====================================
+
+  MountPoint3:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2Volume3
+      Device: /dev/xvdc
+ 
+  MountPoint4:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2Volume4
+      Device: /dev/xvdd
+ 
+  MountPoint5:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2Volume5
+      Device: /dev/xvde
+ 
+  MountPoint6:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2Volume6
+      Device: /dev/xvdf
+        
+  MountPoint7:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2Volume7
+      Device: /dev/xvdg
+
+  MountPoint8:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2Volume8
+      Device: /dev/xvdi
+
+  # my test end ========================================
+  
 Outputs:
   InstanceId:
     Description: InstanceId of the newly created EC2 instance
