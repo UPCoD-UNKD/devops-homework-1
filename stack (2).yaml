@@ -196,6 +196,153 @@ Resources:
 
                 echo '/dev/xvdb /data ext4 defaults,nofail 0 2' >> /etc/fstab
 
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdc \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvdc
+                
+                mkdir -p /data
+                mount /dev/xvdc /data
+
+                echo '/dev/xvdc /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdd \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvdd
+                
+                mkdir -p /data
+                mount /dev/xvdd /data
+
+                echo '/dev/xvdd /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvde \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvde
+                
+                mkdir -p /data
+                mount /dev/xvde /data
+
+                echo '/dev/xvde /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdf \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvdf
+                
+                mkdir -p /data
+                mount /dev/xvdf /data
+
+                echo '/dev/xvdf /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdg \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvdg
+                
+                mkdir -p /data
+                mount /dev/xvdg /data
+
+                echo '/dev/xvdg /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdh \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvdh
+                
+                mkdir -p /data
+                mount /dev/xvdh /data
+
+                echo '/dev/xvdh /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdi \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                
+                mkfs -t ext4 /dev/xvdi
+                
+                mkdir -p /data
+                mount /dev/xvdi /data
+
+                echo '/dev/xvdi /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
                 ${ UserDataArgument1 }
                 ${ UserDataArgument2 }
                 ${ UserDataArgument3 }
@@ -256,6 +403,13 @@ Resources:
       InstanceId: !Ref EC2Instance1
       VolumeId: !Ref Instance1Volume
       Device: /dev/xvdb
+      Device: /dev/xvdс
+      Device: /dev/xvdd
+      Device: /dev/xvde
+      Device: /dev/xvdf
+      Device: /dev/xvdg
+      Device: /dev/xvdh
+      Device: /dev/xvdi
   
   EC2Instance2:
     Type: AWS::EC2::Instance
@@ -316,6 +470,146 @@ Resources:
                 mount /dev/xvdb /data
 
                 echo '/dev/xvdb /data ext4 defaults,nofail 0 2' >> /etc/fstab
+                
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdc \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvdc
+                
+                mkdir -p /data
+                mount /dev/xvdc /data
+
+                echo '/dev/xvdc /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdd \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvdd
+                
+                mkdir -p /data
+                mount /dev/xvdd /data
+
+                echo '/dev/xvdd /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvde \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvde
+                
+                mkdir -p /date
+                mount /dev/xvde /data
+
+                echo '/dev/xvde /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdf \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvdf
+                
+                mkdir -p /data
+                mount /dev/xvdf /data
+
+                echo '/dev/xvdf /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdg \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvdg
+                
+                mkdir -p /data
+                mount /dev/xvdg /data
+
+                echo '/dev/xvdg /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdh \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvdh
+                
+                mkdir -p /data
+                mount /dev/xvdh /data
+
+                echo '/dev/xvdh /data ext4 defaults,nofail 0 2' >> /etc/fstab
+
+                DATA_STATE="unknown"
+                until [ "${!DATA_STATE}" == "attached" ]; do
+                  DATA_STATE=$(aws ec2 describe-volumes \
+                  --region ${AWS::Region} \
+                  --filters \
+                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
+                      Name=attachment.device,Values=/dev/xvdi \
+                  --query Volumes[].Attachments[].State \
+                  --output text)
+
+                  sleep 5
+                done
+                
+                mkfs -t ext4 /dev/xvdi
+                
+                mkdir -p /data
+                mount /dev/xvdi /data
+
+                echo '/dev/xvdi /data ext4 defaults,nofail 0 2' >> /etc/fstab
 
                 ${ UserDataArgument1 }
                 ${ UserDataArgument2 }
@@ -377,6 +671,13 @@ Resources:
       InstanceId: !Ref EC2Instance2
       VolumeId: !Ref Instance2Volume
       Device: /dev/xvdb
+      Device: /dev/xvdc
+      Device: /dev/xvdd
+      Device: /dev/xvde
+      Device: /dev/xvdf
+      Device: /dev/xvdg
+      Device: /dev/xvdh
+      Device: /dev/xvdi
 
 Outputs:
   InstanceId:
