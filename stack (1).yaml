@@ -293,7 +293,7 @@ Resources:
                 /opt/bash/bin/update_instance.sh &>> /opt/bash/log/firstrun.log
 
                 EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
-                
+
                 DATA_STATE="unknown"
                 until [ "${!DATA_STATE}" == "attached" ]; do
                   DATA_STATE=$(aws ec2 describe-volumes \
@@ -306,14 +306,13 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdb
-                
                 mkdir -p /data
                 mount /dev/xvdb /data
 
                 echo '/dev/xvdb /data ext4 defaults,nofail 0 2' >> /etc/fstab
-                
+
                 DATA_STATE="unknown"
                 until [ "${!DATA_STATE}" == "attached" ]; do
                   DATA_STATE=$(aws ec2 describe-volumes \
@@ -326,9 +325,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdc
-                
                 mkdir -p /data
                 mount /dev/xvdc /data
 
@@ -346,9 +344,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdd
-                
                 mkdir -p /data
                 mount /dev/xvdd /data
 
@@ -366,9 +363,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvde
-                
                 mkdir -p /date
                 mount /dev/xvde /data
 
@@ -386,9 +382,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdf
-                
                 mkdir -p /data
                 mount /dev/xvdf /data
 
@@ -406,9 +401,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdg
-                
                 mkdir -p /data
                 mount /dev/xvdg /data
 
@@ -426,9 +420,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdh
-                
                 mkdir -p /data
                 mount /dev/xvdh /data
 
@@ -446,9 +439,8 @@ Resources:
 
                   sleep 5
                 done
-                
+
                 mkfs -t ext4 /dev/xvdi
-                
                 mkdir -p /data
                 mount /dev/xvdi /data
 
@@ -460,7 +452,7 @@ Resources:
       Tags:
         - Key: Name
           Value: Instance2
-    
+
   IPAddress2:
     Type: AWS::EC2::EIP
   IPAssoc2:
@@ -468,7 +460,7 @@ Resources:
     Properties:
       InstanceId: !Ref 'EC2Instance2'
       EIP: !Ref 'IPAddress2'
-  
+
   Eth0B:
     Type: AWS::EC2::NetworkInterface
     Properties:
@@ -484,7 +476,7 @@ Resources:
         Value: Interface 0
       - Key: Interface
         Value: eth0B
-  
+
   InstanceSecurityGroup2:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -497,29 +489,132 @@ Resources:
         ToPort: 22
         CidrIp: !Ref 'SSHLocation'
 
-  
-  Instance2Volume:
+  Instance2VolumeB:
     Type: AWS::EC2::Volume
     Properties:
       Size: !Ref AdditionalEBSVolume
       AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
       Tags:
         - Key: Name
-          Value: Instance2Volume2
+          Value: Instance2VolumeB
 
+  Instance2VolumeC:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeC
+
+  Instance2VolumeD:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeD
+
+  Instance2VolumeE:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeE
+
+  Instance2VolumeF:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeF
+
+  Instance2VolumeG:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeG
+
+  Instance2VolumeH:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeH
+
+  Instance2VolumeI:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: !Ref AdditionalEBSVolume
+      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Instance2VolumeI
 
   MountPoint2:
     Type: AWS::EC2::VolumeAttachment
     Properties:
       InstanceId: !Ref EC2Instance2
-      VolumeId: !Ref Instance2Volume
+      VolumeId: !Ref Instance2VolumeB
       Device: /dev/xvdb
+
+  MountPoint3:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeC
       Device: /dev/xvdc
+
+  MountPoint4:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeD
       Device: /dev/xvdd
+
+  MountPoint5:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeE
       Device: /dev/xvde
+
+  MountPoint6:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeF
       Device: /dev/xvdf
+
+  MountPoint7:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeG
       Device: /dev/xvdg
+
+  MountPoint8:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeH
       Device: /dev/xvdh
+
+  MountPoint9:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref EC2Instance2
+      VolumeId: !Ref Instance2VolumeI
       Device: /dev/xvdi
 
 Outputs:
@@ -532,7 +627,7 @@ Outputs:
   PublicDNS:
     Description: Public DNSName of the newly created EC2 instance
     Value: !GetAtt [EC2Instance1, PublicDnsName]
-  
+
   InstanceId2:
     Description: InstanceId of the newly created EC2 instance
     Value: !Ref 'EC2Instance2'
