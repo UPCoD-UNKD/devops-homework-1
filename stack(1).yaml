@@ -174,7 +174,7 @@ Resources:
                 /opt/bash/bin/update_instance.sh &>> /opt/bash/log/firstrun.log
 
                 EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
-                
+
                 DATA_STATE="unknown"
                 until [ "${!DATA_STATE}" == "attached" ]; do
                   DATA_STATE=$(aws ec2 describe-volumes \
@@ -187,10 +187,8 @@ Resources:
 
                   sleep 5
                 done
-                
-                
+
                 mkfs -t ext4 /dev/xvdb
-                
                 mkdir -p /data
                 mount /dev/xvdb /data
 
@@ -199,11 +197,11 @@ Resources:
                 ${ UserDataArgument1 }
                 ${ UserDataArgument2 }
                 ${ UserDataArgument3 }
-              
+
       Tags:
         - Key: Name
           Value: Instance1
- 
+
   IPAddress1:
     Type: AWS::EC2::EIP
   IPAssoc1:
@@ -211,7 +209,7 @@ Resources:
     Properties:
       InstanceId: !Ref 'EC2Instance1'
       EIP: !Ref 'IPAddress1'
-  
+
   Eth0:
     Type: AWS::EC2::NetworkInterface
     Properties:
@@ -249,133 +247,11 @@ Resources:
         - Key: Name
           Value: Instance1Volume2
 
-
   MountPoint:
     Type: AWS::EC2::VolumeAttachment
     Properties:
       InstanceId: !Ref EC2Instance1
       VolumeId: !Ref Instance1Volume
-      Device: /dev/xvdb
-  
-  EC2Instance2:
-    Type: AWS::EC2::Instance
-    Properties:
-      InstanceType: !Ref 'InstanceType'
-      # SecurityGroupIds: [!Ref 'InstanceSecurityGroup2']
-      # SubnetId: !Ref PublicSubnetA
-      IamInstanceProfile: !Ref InstanceProfile
-      NetworkInterfaces:
-      - NetworkInterfaceId: !Ref 'Eth0B'
-        DeviceIndex: '0'
-      KeyName: !Ref 'KeyName'
-      ImageId: !Ref 'LatestAmiId'
-      BlockDeviceMappings:
-        - DeviceName: /dev/xvda
-          Ebs:
-            VolumeType: gp2
-            VolumeSize: '30'
-            DeleteOnTermination: 'true'
-            Encrypted: 'true'
-      UserData:
-           'Fn::Base64': 
-              !Sub |
-                #!/bin/bash -xe
-
-                hostnamectl set-hostname ${ SystemName }
-
-                echo ${ AdminPassword } | passwd --stdin root
-
-                export USERDATAD_BUCKET=${ S3BucketLocation }
-                yum install -y aws-cli
-                aws s3 ls $USERDATAD_BUCKET | awk '{ print  $4 }'
-
-                mkdir -p /opt/bash/log
-                mkdir -p /opt/bash/bin
-                aws s3 cp $USERDATAD_BUCKET /opt/bash/bin/update_instance.sh --region=${ S3BucketRegion } &> /opt/bash/log/firstrun.log
-                chmod +x /opt/bash/bin/update_instance.sh
-                /opt/bash/bin/update_instance.sh &>> /opt/bash/log/firstrun.log
-
-                EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
-                
-                DATA_STATE="unknown"
-                until [ "${!DATA_STATE}" == "attached" ]; do
-                  DATA_STATE=$(aws ec2 describe-volumes \
-                  --region ${AWS::Region} \
-                  --filters \
-                      Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
-                      Name=attachment.device,Values=/dev/xvdb \
-                  --query Volumes[].Attachments[].State \
-                  --output text)
-
-                  sleep 5
-                done
-                
-                mkfs -t ext4 /dev/xvdb
-                
-                mkdir -p /data
-                mount /dev/xvdb /data
-
-                echo '/dev/xvdb /data ext4 defaults,nofail 0 2' >> /etc/fstab
-
-                ${ UserDataArgument1 }
-                ${ UserDataArgument2 }
-                ${ UserDataArgument3 }
-      Tags:
-        - Key: Name
-          Value: Instance2
-    
-  IPAddress2:
-    Type: AWS::EC2::EIP
-  IPAssoc2:
-    Type: AWS::EC2::EIPAssociation
-    Properties:
-      InstanceId: !Ref 'EC2Instance2'
-      EIP: !Ref 'IPAddress2'
-  
-  Eth0B:
-    Type: AWS::EC2::NetworkInterface
-    Properties:
-      Description: eth0 for instance 2
-      GroupSet: [!Ref 'InstanceSecurityGroup2']
-      PrivateIpAddresses:
-      - PrivateIpAddress: !Ref 'StaticPrivateIP2'
-        Primary: 'true'
-      SourceDestCheck: 'true'
-      SubnetId: !ImportValue SubnetB
-      Tags:
-      - Key: Name
-        Value: Interface 0
-      - Key: Interface
-        Value: eth0B
-  
-  InstanceSecurityGroup2:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      VpcId: !ImportValue VpcId
-      GroupDescription: Enable SSH access via port 22
-      GroupName: !Ref SecurityGroupName2
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: !Ref 'SSHLocation'
-
-  
-  Instance2Volume:
-    Type: AWS::EC2::Volume
-    Properties:
-      Size: !Ref AdditionalEBSVolume
-      AvailabilityZone: !GetAtt EC2Instance2.AvailabilityZone
-      Tags:
-        - Key: Name
-          Value: Instance2Volume2
-
-
-  MountPoint2:
-    Type: AWS::EC2::VolumeAttachment
-    Properties:
-      InstanceId: !Ref EC2Instance2
-      VolumeId: !Ref Instance2Volume
       Device: /dev/xvdb
 
 Outputs:
@@ -388,16 +264,3 @@ Outputs:
   PublicDNS:
     Description: Public DNSName of the newly created EC2 instance
     Value: !GetAtt [EC2Instance1, PublicDnsName]
-  
-  InstanceId2:
-    Description: InstanceId of the newly created EC2 instance
-    Value: !Ref 'EC2Instance2'
-  AZ2:
-    Description: Availability Zone of the newly created EC2 instance
-    Value: !GetAtt [EC2Instance2, AvailabilityZone]
-  PublicDNS2:
-    Description: Public DNSName of the newly created EC2 instance
-    Value: !GetAtt [EC2Instance2, PublicDnsName]
-  S3BucketPath:
-    Description: The s3 bucket path for bash script execute in userdata
-    Value: !Ref S3BucketLocation
