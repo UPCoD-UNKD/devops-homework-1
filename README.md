@@ -2,7 +2,17 @@
 Repository creates for fast running development process with configuration, which are the same from project to project.
 
 ## Building
-...
+* Use [Nested Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html)
+* Use existed [Sample](https://aws.amazon.com/ru/blogs/infrastructure-and-automation/conditionally-launch-aws-cloudformation-resources-based-on-user-input/)
+* TODO:
+
+* Flexible VPC: Select or Create
+* Flexible SubnetA and SubnetB: Select or Create
+* Flexible Security Groups (A and B): Select or Create
+* Flexible Role for EC2 Profile: Select or Create
+* Passs optional Parameters inside EC2: Conditional Executing
+
+
 
 ## Troubleshooting
 ...
