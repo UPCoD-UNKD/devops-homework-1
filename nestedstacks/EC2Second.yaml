@@ -508,3 +508,73 @@ Outputs:
   S3BucketPath:
     Description: The s3 bucket path for bash script execute in userdata
     Value: !Ref S3BucketLocation
+#-------for root stack----------#
+  InstanceProfile:
+    Description: Instance Profile
+    Value: !Ref 'InstanceProfile'
+  InstanceIAMRole:
+    Description: Instance IAM Role
+    Value: !Ref 'InstanceIAMRole'
+  EC2Instance2:
+    Description: EC2Instance2
+    Value: !Ref 'EC2Instance2'
+  IPAddress2:
+    Description: IPAddress2
+    Value: !Ref 'IPAddress2'
+  IPAssoc2:
+    Description: IPAssoc2
+    Value: !Ref 'IPAssoc2'
+  Eth0B:
+    Description: Eth0B
+    Value: !Ref 'Eth0B'
+  InstanceSecurityGroup2:
+    Description: InstanceSecurityGroup2
+    Value: !Ref 'InstanceSecurityGroup2'
+  Instance2VolumeB:
+    Description: Instance2VolumeB
+    Value: !Ref 'Instance2VolumeB'
+  Instance2VolumeC:
+    Description: Instance2VolumeC
+    Value: !Ref 'Instance2VolumeC'
+  Instance2VolumeD:
+    Description: Instance2VolumeD
+    Value: !Ref 'Instance2VolumeD'
+  Instance2VolumeE:
+    Description: Instance2VolumeE
+    Value: !Ref 'Instance2VolumeE'
+  Instance2VolumeF:
+    Description: Instance2VolumeF
+    Value: !Ref 'Instance2VolumeF'
+  Instance2VolumeG:
+    Description: Instance2VolumeG
+    Value: !Ref 'Instance2VolumeG'
+  Instance2VolumeH:
+    Description: Instance2VolumeH
+    Value: !Ref 'Instance2VolumeH'
+  Instance2VolumeI:
+    Description: Instance2VolumeI
+    Value: !Ref 'Instance2VolumeI'
+  MountPoint2:
+    Description: MountPoint2
+    Value: !Ref 'MountPoint2'
+  MountPoint3:
+    Description: MountPoint3
+    Value: !Ref 'MountPoint3'
+  MountPoint4:
+    Description: MountPoint4
+    Value: !Ref 'MountPoint4'
+  MountPoint5:
+    Description: MountPoint5
+    Value: !Ref 'MountPoint5'
+  MountPoint6:
+    Description: MountPoint6
+    Value: !Ref 'MountPoint6'
+  MountPoint7:
+    Description: MountPoint7
+    Value: !Ref 'MountPoint7'
+  MountPoint8:
+    Description: MountPoint8
+    Value: !Ref 'MountPoint8'
+  MountPoint9:
+    Description: MountPoint9
+    Value: !Ref 'MountPoint9'

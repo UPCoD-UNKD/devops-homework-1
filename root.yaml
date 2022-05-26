@@ -1,0 +1,227 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+#---VPC Parameters--------------
+  VPCRange:
+    Type: String
+    Description: VPC CIDR Range
+    Default: 10.1.0.0/16
+  PubSubnetA:
+    Type: String
+    Description: Public Subnet A CIDR Range
+    Default: 10.1.10.0/24
+  PubSubnetB:
+    Type: String
+    Description: Public Subnet B CIDR Range
+    Default: 10.1.20.0/24
+#---EC2First Parameters--------------
+  SystemName:
+    Type: String
+    Description: Specify system name. The following constraints applied between 3 - 8 characters, lowercase alphanumeric and use for send it in to User Data init cloud for EC2
+  AdminPassword:
+    Description: Password for the Administrator for send it in to User Data init cloud for EC2
+    Type: String
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t3.small
+    AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium, t2.large, t2.xlarge, t2.2xlarge,
+      t3.nano, t3.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge,
+      m4.large, m4.xlarge, m4.2xlarge, m4.4xlarge, m4.10xlarge,
+      m5.large, m5.xlarge, m5.2xlarge, m5.4xlarge,
+      c5.large, c5.xlarge, c5.2xlarge, c5.4xlarge, c5.9xlarge,
+      g3.8xlarge,
+      r5.large, r5.xlarge, r5.2xlarge, r5.4xlarge, r3.12xlarge,
+      i3.xlarge, i3.2xlarge, i3.4xlarge, i3.8xlarge,
+      d2.xlarge, d2.2xlarge, d2.4xlarge, d2.8xlarge]
+    ConstraintDescription: must be a valid EC2 instance type.
+  SecurityGroupName:
+    Description: Name of the security group
+    Type: String 
+  SecurityGroupName2:
+    Description: Name of the security group2
+    Type: String 
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  LatestAmiId:
+    Type:  'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  AdditionalEBSVolume:
+    Description: The addtional disk size
+    Default: 10
+    Type: String
+  StaticPrivateIP:
+    Type: String
+    Default: 10.1.10.56
+    Description: First instance private IP. This must be a valid IP address for Subnet
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})
+  StaticPrivateIP2:
+    Type: String
+    Default: 10.1.20.88
+    Description: Second instance private IP. This must be a valid IP address for Subnet
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})
+  S3BucketLocation:
+    Type: String
+    Description: Please input the userdata location from s3 example 's3://hui-cloud-aha/bash.sh'
+  S3BucketRegion:
+    Type: String
+    Description: Input the S3bucket region for example 'us-east-1'
+    Default: us-east-1
+  UserDataArgument1:
+    Type: String
+    Description: Please input userdata argument1
+  UserDataArgument2:
+    Type: String
+    Description: Please input userdata argument2
+  UserDataArgument3:
+    Type: String
+    Description: Please input userdata argument3
+
+
+Resources:
+  VPC:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://popadiukdv.s3.amazonaws.com/nestedstacks/vpc.yaml
+      TimeoutInMinutes: 15
+
+
+
+  EC2First:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://popadiukdv.s3.amazonaws.com/nestedstacks/EC2First.yaml
+      TimeoutInMinutes: 15
+      Parameters:
+          SystemName: !Ref SystemName
+          AdminPassword: !Ref AdminPassword
+          SecurityGroupName: !Ref SecurityGroupName
+          SecurityGroupName2: !Ref SecurityGroupName2
+          UserDataArgument1: !Ref UserDataArgument1
+          KeyName: !Ref KeyName
+          UserDataArgument2: !Ref UserDataArgument2
+          UserDataArgument3: !Ref UserDataArgument3
+          S3BucketLocation: !Ref S3BucketLocation
+    DependsOn: VPC
+
+  EC2Second:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://popadiukdv.s3.amazonaws.com/nestedstacks/EC2Second.yaml
+      TimeoutInMinutes: 15
+      Parameters:
+          SystemName: !Ref SystemName
+          AdminPassword: !Ref AdminPassword
+          SecurityGroupName: !Ref SecurityGroupName
+          SecurityGroupName2: !Ref SecurityGroupName2
+          UserDataArgument1: !Ref UserDataArgument1
+          KeyName: !Ref KeyName
+          UserDataArgument2: !Ref UserDataArgument2
+          UserDataArgument3: !Ref UserDataArgument3
+          S3BucketLocation: !Ref S3BucketLocation
+    DependsOn: EC2First
+    
+Outputs:
+#----VPC-----#
+  StackVPCRef:
+    Value: !Ref VPC
+  InternetGateway:
+    Value: !GetAtt VPC.Outputs.InternetGateway
+  AttachGateway:
+    Value: !GetAtt VPC.Outputs.AttachGateway
+  SubnetA:
+    Value: !GetAtt VPC.Outputs.SubnetA
+  SubnetB:
+    Value: !GetAtt VPC.Outputs.SubnetB
+  PublicRouteTable:
+    Value: !GetAtt VPC.Outputs.PublicRouteTable
+  PublicRoute1:
+    Value: !GetAtt VPC.Outputs.PublicRoute1
+  PublicSubnetARouteTableAssociation:
+    Value: !GetAtt VPC.Outputs.PublicSubnetARouteTableAssociation
+  PublicSubnetBRouteTableAssociation:
+    Value: !GetAtt VPC.Outputs.PublicSubnetBRouteTableAssociation
+  NATGateway:
+    Value: !GetAtt VPC.Outputs.NATGateway
+  ElasticIPAddress:
+    Value: !GetAtt VPC.Outputs.ElasticIPAddress
+#----STACK 1-----#
+  Stack1Ref:
+    Value: !Ref EC2First
+  InstanceProfile:
+    Value: !GetAtt EC2First.Outputs.InstanceProfile
+  InstanceIAMRole:
+    Value: !GetAtt EC2First.Outputs.InstanceIAMRole
+  EC2Instance1:
+    Value: !GetAtt EC2First.Outputs.EC2Instance1
+  IPAddress1:
+    Value: !GetAtt EC2First.Outputs.IPAddress1
+  IPAssoc1:
+    Value: !GetAtt EC2First.Outputs.IPAssoc1
+  Eth0:
+    Value: !GetAtt EC2First.Outputs.Eth0
+  InstanceSecurityGroup:
+    Value: !GetAtt EC2First.Outputs.InstanceSecurityGroup
+  Instance1Volume:
+    Value: !GetAtt EC2First.Outputs.Instance1Volume
+  MountPoint:
+    Value: !GetAtt EC2First.Outputs.MountPoint
+#----STACK 2-----#
+  Stack2Ref:
+    Value: !Ref EC2Second
+  InstanceProfile:
+    Value: !GetAtt EC2Second.Outputs.InstanceProfile
+  InstanceIAMRole:
+    Value: !GetAtt EC2Second.Outputs.InstanceIAMRole
+  EC2Instance2:
+    Value: !GetAtt EC2Second.Outputs.EC2Instance2
+  IPAddress2:
+    Value: !GetAtt EC2Second.Outputs.IPAddress2
+  IPAssoc2:
+    Value: !GetAtt EC2Second.Outputs.IPAssoc2
+  Eth0B:
+    Value: !GetAtt EC2Second.Outputs.Eth0B
+  InstanceSecurityGroup2:
+    Value: !GetAtt EC2Second.Outputs.InstanceSecurityGroup2
+  Instance2VolumeB:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeB
+  Instance2VolumeC:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeC
+  Instance2VolumeD:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeD
+  Instance2VolumeE:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeE
+  Instance2VolumeF:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeF
+  Instance2VolumeG:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeG
+  Instance2VolumeH:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeH
+  Instance2VolumeI:
+    Value: !GetAtt EC2Second.Outputs.Instance2VolumeI
+  MountPoint2:
+    Value: !GetAtt EC2Second.Outputs.MountPoint2
+  MountPoint3:
+    Value: !GetAtt EC2Second.Outputs.MountPoint3
+  MountPoint4:
+    Value: !GetAtt EC2Second.Outputs.MountPoint4
+  MountPoint5:
+    Value: !GetAtt EC2Second.Outputs.MountPoint5
+  MountPoint6:
+    Value: !GetAtt EC2Second.Outputs.MountPoint6
+  MountPoint7:
+    Value: !GetAtt EC2Second.Outputs.MountPoint7
+  MountPoint8:
+    Value: !GetAtt EC2Second.Outputs.MountPoint8
+  MountPoint9:
+    Value: !GetAtt EC2Second.Outputs.MountPoint9

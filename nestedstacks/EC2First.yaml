@@ -77,9 +77,6 @@ Parameters:
     Description: Please input userdata argument3
 
 
-
-
-
 Resources:
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -264,3 +261,31 @@ Outputs:
   PublicDNS:
     Description: Public DNSName of the newly created EC2 instance
     Value: !GetAtt [EC2Instance1, PublicDnsName]
+#-------for root stack----------#
+  InstanceProfile:
+    Description: Instance Profile
+    Value: !Ref 'InstanceProfile'
+  InstanceIAMRole:
+    Description: Instance IAM Role
+    Value: !Ref 'InstanceIAMRole'
+  EC2Instance1:
+    Description: EC2Instance1
+    Value: !Ref 'EC2Instance1'
+  IPAddress1:
+    Description: IPAddress1
+    Value: !Ref 'IPAddress1'
+  IPAssoc1:
+    Description: IPAssoc1
+    Value: !Ref 'IPAssoc1'
+  Eth0:
+    Description: Eth0
+    Value: !Ref 'Eth0'
+  InstanceSecurityGroup:
+    Description: InstanceSecurityGroup
+    Value: !Ref 'InstanceSecurityGroup'
+  Instance1Volume:
+    Description: Instance1Volume
+    Value: !Ref 'Instance1Volume'
+  MountPoint:
+    Description: MountPoint
+    Value: !Ref 'MountPoint'
