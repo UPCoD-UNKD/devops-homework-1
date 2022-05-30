@@ -8,7 +8,7 @@ Repository creates for fast running development process with configuration, whic
 
 * fake_vpc.yaml + https://github.com/stelligent/empty-stack
 * https://aws.amazon.com/ru/blogs/infrastructure-and-automation/conditionally-launch-aws-cloudformation-resources-based-on-user-input/
-* 
+* Bonus level: nested condition - if use exist vpc is true - add import existed vpc parameters: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html
 
 
 
