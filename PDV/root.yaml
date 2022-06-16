@@ -1,6 +1,14 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
+  VPCCreate:
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Description: Make new VPC or choose from existing one
+    Default: true
+
 #---VPC Parameters--------------
   VPCRange:
     Type: String
@@ -87,20 +95,26 @@ Parameters:
     Type: String
     Description: Please input userdata argument3
 
+Conditions:
+  CreateVPC: !Equals
+    - !Ref VPCCreate
+    - true
 
 Resources:
+
   VPC:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://popadiukdv.s3.amazonaws.com/nestedstacks/vpc.yaml
+      TemplateURL: !If [CreateVPC,
+                        https://s3.amazonaws.com/pdv1231.nested/nested/vpc.yaml,
+                        https://s3.amazonaws.com/pdv1231.nested/nested/fakevpc.yaml
+                        ]
       TimeoutInMinutes: 15
-
-
 
   EC2First:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://popadiukdv.s3.amazonaws.com/nestedstacks/EC2First.yaml
+      TemplateURL: https://s3.amazonaws.com/pdv1231.nested/nested/EC2First.yaml
       TimeoutInMinutes: 15
       Parameters:
           SystemName: !Ref SystemName
@@ -117,7 +131,7 @@ Resources:
   EC2Second:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://popadiukdv.s3.amazonaws.com/nestedstacks/EC2Second.yaml
+      TemplateURL: https://s3.amazonaws.com/pdv1231.nested/nested/EC2Second.yaml
       TimeoutInMinutes: 15
       Parameters:
           SystemName: !Ref SystemName
@@ -131,6 +145,7 @@ Resources:
           S3BucketLocation: !Ref S3BucketLocation
     DependsOn: EC2First
     
+
 Outputs:
 #----VPC-----#
   StackVPCRef:
